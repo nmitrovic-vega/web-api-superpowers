@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Switch } from "@mui/material";
+import { useWakeLock } from "./useWakeLock";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [isWake, setIsWake] = useState<boolean>(false);
+	const [seconds, setSeconds] = useState<number>(60);
+	const { isWakeLock } = useWakeLock(isWake);
+	const handleSwitch = async ({ target: { checked } }: any) => {
+		setIsWake(checked);
+	};
+
+	useEffect(() => {
+		setInterval(() => {
+			setSeconds((seconds) => seconds - 1);
+		}, 1000);
+	}, []);
+
+	return (
+		<div className="App">
+			<Switch onChange={handleSwitch} />
+			{JSON.stringify(isWakeLock)}
+			{seconds}
+		</div>
+	);
 }
 
 export default App;
