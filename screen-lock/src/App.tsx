@@ -1,28 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Switch } from "@mui/material";
-import { useWakeLock } from "./useWakeLock";
+import React from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import Header from "./components/Header/Header";
+import Search from "./components/Search/Search";
+import { theme } from "./theme";
+import Recipes from "./assets/recipes.png";
 import "./App.css";
 
 function App() {
-	const [isWake, setIsWake] = useState<boolean>(false);
-	const [seconds, setSeconds] = useState<number>(60);
-	const { isWakeLock } = useWakeLock(isWake);
-	const handleSwitch = async ({ target: { checked } }: any) => {
-		setIsWake(checked);
-	};
-
-	useEffect(() => {
-		setInterval(() => {
-			setSeconds((seconds) => seconds - 1);
-		}, 1000);
-	}, []);
-
 	return (
-		<div className="App">
-			<Switch onChange={handleSwitch} />
-			{JSON.stringify(isWakeLock)}
-			{seconds}
-		</div>
+		<ThemeProvider theme={theme}>
+			<div className="App">
+				<Header />
+				<Search />
+				<img src={Recipes} style={{ marginTop: "30px", width: "300px" }} />
+				<div className="background-image red" />
+				<div className="background-image yellow" />
+			</div>
+		</ThemeProvider>
 	);
 }
 
